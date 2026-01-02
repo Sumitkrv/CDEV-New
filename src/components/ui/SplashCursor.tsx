@@ -87,9 +87,9 @@ function SplashCursor({
         antialias: false,
         preserveDrawingBuffer: false
       };
-      let gl = canvas.getContext('webgl2', params);
+      let gl = canvas.getContext('webgl2', params) as WebGL2RenderingContext | null;
       const isWebGL2 = !!gl;
-      if (!isWebGL2) gl = canvas.getContext('webgl', params) || canvas.getContext('experimental-webgl', params);
+      if (!isWebGL2) gl = (canvas.getContext('webgl', params) || canvas.getContext('experimental-webgl', params)) as WebGLRenderingContext | null;
 
       if (!gl) throw new Error('WebGL not supported');
 
@@ -862,6 +862,7 @@ function SplashCursor({
     }
 
     function splat(x: number, y: number, dx: number, dy: number, color: any) {
+      if (!canvas) return;
       splatProgram.bind();
       gl.uniform1i(splatProgram.uniforms.uTarget, velocity.read.attach(0));
       gl.uniform1f(splatProgram.uniforms.aspectRatio, canvas.width / canvas.height);
@@ -878,12 +879,14 @@ function SplashCursor({
     }
 
     function correctRadius(radius: number) {
+      if (!canvas) return radius;
       let aspectRatio = canvas.width / canvas.height;
       if (aspectRatio > 1) radius *= aspectRatio;
       return radius;
     }
 
     function updatePointerDownData(pointer: any, id: number, posX: number, posY: number) {
+      if (!canvas) return;
       pointer.id = id;
       pointer.down = true;
       pointer.moved = false;
@@ -897,6 +900,7 @@ function SplashCursor({
     }
 
     function updatePointerMoveData(pointer: any, posX: number, posY: number, color: any) {
+      if (!canvas) return;
       pointer.prevTexcoordX = pointer.texcoordX;
       pointer.prevTexcoordY = pointer.texcoordY;
       pointer.texcoordX = posX / canvas.width;
@@ -912,12 +916,14 @@ function SplashCursor({
     }
 
     function correctDeltaX(delta: number) {
+      if (!canvas) return delta;
       let aspectRatio = canvas.width / canvas.height;
       if (aspectRatio < 1) delta *= aspectRatio;
       return delta;
     }
 
     function correctDeltaY(delta: number) {
+      if (!canvas) return delta;
       let aspectRatio = canvas.width / canvas.height;
       if (aspectRatio > 1) delta /= aspectRatio;
       return delta;
@@ -983,11 +989,12 @@ function SplashCursor({
     }
 
     function getResolution(resolution: number) {
-      let aspectRatio = gl.drawingBufferWidth / gl.drawingBufferHeight;
+      const glContext = gl as WebGLRenderingContext | WebGL2RenderingContext;
+      let aspectRatio = glContext.drawingBufferWidth / glContext.drawingBufferHeight;
       if (aspectRatio < 1) aspectRatio = 1.0 / aspectRatio;
       const min = Math.round(resolution);
       const max = Math.round(resolution * aspectRatio);
-      if (gl.drawingBufferWidth > gl.drawingBufferHeight) return { width: max, height: min };
+      if (glContext.drawingBufferWidth > glContext.drawingBufferHeight) return { width: max, height: min };
       else return { width: min, height: max };
     }
 
