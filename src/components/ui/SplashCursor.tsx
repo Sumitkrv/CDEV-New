@@ -87,7 +87,7 @@ function SplashCursor({
         antialias: false,
         preserveDrawingBuffer: false
       };
-      let gl = canvas.getContext('webgl2', params) as WebGL2RenderingContext | null;
+      let gl: WebGLRenderingContext | WebGL2RenderingContext | null = canvas.getContext('webgl2', params) as WebGL2RenderingContext | null;
       const isWebGL2 = !!gl;
       if (!isWebGL2) gl = (canvas.getContext('webgl', params) || canvas.getContext('experimental-webgl', params)) as WebGLRenderingContext | null;
 
@@ -165,14 +165,14 @@ function SplashCursor({
       fragmentShaderSource: string;
       programs: WebGLProgram[] = [];
       activeProgram: WebGLProgram | null = null;
-      uniforms: any[] = [];
+      uniforms: any = {};
 
       constructor(vertexShader: WebGLShader, fragmentShaderSource: string) {
         this.vertexShader = vertexShader;
         this.fragmentShaderSource = fragmentShaderSource;
         this.programs = [];
         this.activeProgram = null;
-        this.uniforms = [];
+        this.uniforms = {};
       }
 
       setKeywords(keywords?: string[]) {
@@ -222,7 +222,7 @@ function SplashCursor({
     }
 
     function getUniforms(program: WebGLProgram) {
-      let uniforms: any = [];
+      let uniforms: any = {};
       let uniformCount = gl.getProgramParameter(program, gl.ACTIVE_UNIFORMS);
       for (let i = 0; i < uniformCount; i++) {
         let uniformInfo = gl.getActiveUniform(program, i);
@@ -737,6 +737,7 @@ function SplashCursor({
     }
 
     function resizeCanvas() {
+      if (!canvas) return false;
       let width = scaleByPixelRatio(canvas.clientWidth);
       let height = scaleByPixelRatio(canvas.clientHeight);
       if (canvas.width !== width || canvas.height !== height) {
