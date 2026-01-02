@@ -58,7 +58,7 @@ const products: Product[] = [
     range: '80 km',
     acceleration: '4.5s',
     topSpeed: '55 km/h',
-    image: '/images/CD_EV15533.jpg',
+    image: '/images/CD_EV15834.jpg',
     gradient: 'from-blue-500/20 to-cyan-500/20',
   },
   {
@@ -80,7 +80,7 @@ const products: Product[] = [
     range: '150 km',
     acceleration: '3.2s',
     topSpeed: '75 km/h',
-    image: '/images/CD_EV15868.jpg',
+    image: '/images/nohat_upscaled_x4_5CwHTQ.jpg',
     gradient: 'from-orange-500/20 to-red-500/20',
   },
 ]

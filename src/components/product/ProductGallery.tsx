@@ -11,9 +11,9 @@ const ProductGallery = () => {
   console.log('ProductGallery render - selectedImage:', selectedImage)
 
   const galleryImages = [
-    { src: '/images/CD_EV15783.jpg', title: 'Aerodynamic Excellence', category: 'Design', color: 'from-blue-500/20 to-cyan-500/20' },
+    { src: '/images/CD_EV15555.jpg', title: 'Aerodynamic Excellence', category: 'Design', color: 'from-blue-500/20 to-cyan-500/20' },
     { src: '/images/CD_EV15757.jpg', title: 'Intelligent Dashboard', category: 'Technology', color: 'from-purple-500/20 to-pink-500/20' },
-    { src: '/images/CD_EV15705.jpg', title: 'Dynamic Performance', category: 'Power', color: 'from-orange-500/20 to-red-500/20' },
+    { src: '/images/nohat_upscaled_x4_5CwHTQ.jpg', title: 'Dynamic Performance', category: 'Power', color: 'from-orange-500/20 to-red-500/20' },
   ]
 
   const nextImage = () => {
