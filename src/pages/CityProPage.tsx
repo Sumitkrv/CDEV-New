@@ -1,0 +1,654 @@
+import { useState } from 'react'
+import { motion, useScroll, useTransform } from 'framer-motion'
+import { Link } from 'react-router-dom'
+import Header from '../components/layout/Header'
+import Footer from '../components/layout/Footer'
+import BookingModal from '../components/booking/BookingModal'
+
+const CityProPage = () => {
+  const [isBookModalOpen, setIsBookModalOpen] = useState(false)
+  const { scrollYProgress } = useScroll()
+  const opacity = useTransform(scrollYProgress, [0, 0.2], [1, 0])
+  const scale = useTransform(scrollYProgress, [0, 0.2], [1, 0.95])
+
+  const specifications = [
+    {
+      category: 'Performance',
+      specs: [
+        { 
+          label: 'Top Speed', 
+          value: '65 km/h', 
+          icon: (
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+            </svg>
+          )
+        },
+        { 
+          label: '0-40 km/h', 
+          value: '3.8 seconds', 
+          icon: (
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15.59 14.37a6 6 0 01-5.84 7.38v-4.8m5.84-2.58a14.98 14.98 0 006.16-12.12A14.98 14.98 0 009.631 8.41m5.96 5.96a14.926 14.926 0 01-5.841 2.58m-.119-8.54a6 6 0 00-7.381 5.84h4.8m2.581-5.84a14.927 14.927 0 00-2.58 5.84m2.699 2.7c-.103.021-.207.041-.311.06a15.09 15.09 0 01-2.448-2.448 14.9 14.9 0 01.06-.312m-2.24 2.39a4.493 4.493 0 00-1.757 4.306 4.493 4.493 0 004.306-1.758M16.5 9a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0z" />
+            </svg>
+          )
+        },
+        { 
+          label: 'Motor Power', 
+          value: '2.0 kW', 
+          icon: (
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9.594 3.94c.09-.542.56-.94 1.11-.94h2.593c.55 0 1.02.398 1.11.94l.213 1.281c.063.374.313.686.645.87.074.04.147.083.22.127.324.196.72.257 1.075.124l1.217-.456a1.125 1.125 0 011.37.49l1.296 2.247a1.125 1.125 0 01-.26 1.431l-1.003.827c-.293.24-.438.613-.431.992a6.759 6.759 0 010 .255c-.007.378.138.75.43.99l1.005.828c.424.35.534.954.26 1.43l-1.298 2.247a1.125 1.125 0 01-1.369.491l-1.217-.456c-.355-.133-.75-.072-1.076.124a6.57 6.57 0 01-.22.128c-.331.183-.581.495-.644.869l-.213 1.28c-.09.543-.56.941-1.11.941h-2.594c-.55 0-1.02-.398-1.11-.94l-.213-1.281c-.062-.374-.312-.686-.644-.87a6.52 6.52 0 01-.22-.127c-.325-.196-.72-.257-1.076-.124l-1.217.456a1.125 1.125 0 01-1.369-.49l-1.297-2.247a1.125 1.125 0 01.26-1.431l1.004-.827c.292-.24.437-.613.43-.992a6.932 6.932 0 010-.255c.007-.378-.138-.75-.43-.99l-1.004-.828a1.125 1.125 0 01-.26-1.43l1.297-2.247a1.125 1.125 0 011.37-.491l1.216.456c.356.133.751.072 1.076-.124.072-.044.146-.087.22-.128.332-.183.582-.495.644-.869l.214-1.281z" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            </svg>
+          )
+        },
+        { 
+          label: 'Torque', 
+          value: '120 Nm', 
+          icon: (
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M11.42 15.17L17.25 21A2.652 2.652 0 0021 17.25l-5.877-5.877M11.42 15.17l2.496-3.03c.317-.384.74-.626 1.208-.766M11.42 15.17l-4.655 5.653a2.548 2.548 0 11-3.586-3.586l6.837-5.63m5.108-.233c.55-.164 1.163-.188 1.743-.14a4.5 4.5 0 004.486-6.336l-3.276 3.277a3.004 3.004 0 01-2.25-2.25l3.276-3.276a4.5 4.5 0 00-6.336 4.486c.091 1.076-.071 2.264-.904 2.95l-.102.085m-1.745 1.437L5.909 7.5H4.5L2.25 3.75l1.5-1.5L7.5 4.5v1.409l4.26 4.26m-1.745 1.437l1.745-1.437m6.615 8.206L15.75 15.75M4.867 19.125h.008v.008h-.008v-.008z" />
+            </svg>
+          )
+        },
+      ],
+    },
+    {
+      category: 'Battery & Range',
+      specs: [
+        { 
+          label: 'Range', 
+          value: '120 km per charge', 
+          icon: (
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+            </svg>
+          )
+        },
+        { 
+          label: 'Battery Type', 
+          value: 'Lithium-ion 60V 40Ah', 
+          icon: (
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M21 10.5h.375c.621 0 1.125.504 1.125 1.125v2.25c0 .621-.504 1.125-1.125 1.125H21M3.75 18h15A2.25 2.25 0 0021 15.75v-6a2.25 2.25 0 00-2.25-2.25h-15A2.25 2.25 0 001.5 9.75v6A2.25 2.25 0 003.75 18z" />
+            </svg>
+          )
+        },
+        { 
+          label: 'Charging Time', 
+          value: '3-4 hours', 
+          icon: (
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          )
+        },
+        { 
+          label: 'Fast Charge', 
+          value: '1.5 hours (80%)', 
+          icon: (
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+            </svg>
+          )
+        },
+      ],
+    },
+    {
+      category: 'Features',
+      specs: [
+        { 
+          label: 'Display', 
+          value: 'TFT Touchscreen with Navigation', 
+          icon: (
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
+            </svg>
+          )
+        },
+        { 
+          label: 'Brakes', 
+          value: 'ABS Disc (Front & Rear)', 
+          icon: (
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 9.563C9 9.252 9.252 9 9.563 9h4.874c.311 0 .563.252.563.563v4.874c0 .311-.252.563-.563.563H9.564A.562.562 0 019 14.437V9.564z" />
+            </svg>
+          )
+        },
+        { 
+          label: 'Suspension', 
+          value: 'Hydraulic (Front), Mono-shock (Rear)', 
+          icon: (
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6.75 7.5l3 2.25-3 2.25m4.5 0h3m-9 8.25h13.5A2.25 2.25 0 0021 18V6a2.25 2.25 0 00-2.25-2.25H5.25A2.25 2.25 0 003 6v12a2.25 2.25 0 002.25 2.25z" />
+            </svg>
+          )
+        },
+        { 
+          label: 'Weight', 
+          value: '95 kg', 
+          icon: (
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M12 3v17.25m0 0c-1.472 0-2.882.265-4.185.75M12 20.25c1.472 0 2.882.265 4.185.75M18.75 4.97A48.416 48.416 0 0012 4.5c-2.291 0-4.545.16-6.75.47m13.5 0c1.01.143 2.01.317 3 .52m-3-.52l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.988 5.988 0 01-2.031.352 5.988 5.988 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L18.75 4.971zm-16.5.52c.99-.203 1.99-.377 3-.52m0 0l2.62 10.726c.122.499-.106 1.028-.589 1.202a5.989 5.989 0 01-2.031.352 5.989 5.989 0 01-2.031-.352c-.483-.174-.711-.703-.59-1.202L5.25 4.971z" />
+            </svg>
+          )
+        },
+      ],
+    },
+    {
+      category: 'Smart Features',
+      specs: [
+        { 
+          label: 'Mobile App', 
+          value: 'iOS & Android Premium', 
+          icon: (
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" />
+            </svg>
+          )
+        },
+        { 
+          label: 'GPS Tracking', 
+          value: 'Live tracking + Geo-fencing', 
+          icon: (
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+            </svg>
+          )
+        },
+        { 
+          label: 'Anti-theft', 
+          value: 'Smart alarm + Remote lock', 
+          icon: (
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 10.5V6.75a4.5 4.5 0 10-9 0v3.75m-.75 11.25h10.5a2.25 2.25 0 002.25-2.25v-6.75a2.25 2.25 0 00-2.25-2.25H6.75a2.25 2.25 0 00-2.25 2.25v6.75a2.25 2.25 0 002.25 2.25z" />
+            </svg>
+          )
+        },
+        { 
+          label: 'Ride Modes', 
+          value: 'Eco, City, Sport, Custom', 
+          icon: (
+            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M10.5 6h9.75M10.5 6a1.5 1.5 0 11-3 0m3 0a1.5 1.5 0 10-3 0M3.75 6H7.5m3 12h9.75m-9.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-3.75 0H7.5m9-6h3.75m-3.75 0a1.5 1.5 0 01-3 0m3 0a1.5 1.5 0 00-3 0m-9.75 0h9.75" />
+            </svg>
+          )
+        },
+      ],
+    },
+  ]
+
+  const features = [
+    {
+      title: 'Premium Performance',
+      description: 'Advanced motor technology delivers smooth power with impressive acceleration',
+      icon: (
+        <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M16.5 18.75h-9m9 0a3 3 0 013 3h-15a3 3 0 013-3m9 0v-3.375c0-.621-.503-1.125-1.125-1.125h-.871M7.5 18.75v-3.375c0-.621.504-1.125 1.125-1.125h.872m5.007 0H9.497m5.007 0a7.454 7.454 0 01-.982-3.172M9.497 14.25a7.454 7.454 0 00.981-3.172M5.25 4.236c-.982.143-1.954.317-2.916.52A6.003 6.003 0 007.73 9.728M5.25 4.236V4.5c0 2.108.966 3.99 2.48 5.228M5.25 4.236V2.721C7.456 2.41 9.71 2.25 12 2.25c2.291 0 4.545.16 6.75.47v1.516M7.73 9.728a6.726 6.726 0 002.748 1.35m8.272-6.842V4.5c0 2.108-.966 3.99-2.48 5.228m2.48-5.492a46.32 46.32 0 012.916.52 6.003 6.003 0 01-5.395 4.972m0 0a6.726 6.726 0 01-2.749 1.35m0 0a6.772 6.772 0 01-3.044 0" />
+        </svg>
+      ),
+    },
+    {
+      title: 'Extended Range',
+      description: 'Go further with 120 km range on a single charge, perfect for long commutes',
+      icon: (
+        <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+        </svg>
+      ),
+    },
+    {
+      title: 'Smart Navigation',
+      description: 'Built-in GPS navigation with turn-by-turn directions on the TFT display',
+      icon: (
+        <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9 6.75V15m6-6v8.25m.503 3.498l4.875-2.437c.381-.19.622-.58.622-1.006V4.82c0-.836-.88-1.38-1.628-1.006l-3.869 1.934c-.317.159-.69.159-1.006 0L9.503 3.252a1.125 1.125 0 00-1.006 0L3.622 5.689C3.24 5.88 3 6.27 3 6.695V19.18c0 .836.88 1.38 1.628 1.006l3.869-1.934c.317-.159.69-.159 1.006 0l4.994 2.497c.317.158.69.158 1.006 0z" />
+        </svg>
+      ),
+    },
+    {
+      title: 'ABS Safety',
+      description: 'Anti-lock braking system ensures maximum safety in all conditions',
+      icon: (
+        <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+        </svg>
+      ),
+    },
+    {
+      title: 'Premium Comfort',
+      description: 'Hydraulic suspension and ergonomic design for superior riding comfort',
+      icon: (
+        <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+        </svg>
+      ),
+    },
+    {
+      title: 'Fast Charging',
+      description: 'Quick charge technology gets you back on the road in no time',
+      icon: (
+        <svg className="w-8 h-8" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+          <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 13.5l10.5-11.25L12 10.5h8.25L9.75 21.75 12 13.5H3.75z" />
+        </svg>
+      ),
+    },
+  ]
+
+  const colors = [
+    { name: 'Titanium Grey', hex: '#71717a', image: '/images/CD_EV15750.jpg' },
+    { name: 'Pearl White', hex: '#f5f5f5', image: '/images/CD_EV15750.jpg' },
+    { name: 'Royal Purple', hex: '#7c3aed', image: '/images/CD_EV15750.jpg' },
+    { name: 'Emerald Green', hex: '#059669', image: '/images/CD_EV15750.jpg' },
+  ]
+
+  const [selectedColor, setSelectedColor] = useState(colors[0])
+
+  return (
+    <div className="min-h-screen bg-black text-white">
+      <Header />
+
+      {/* Hero Section */}
+      <section className="relative min-h-screen flex items-center justify-center overflow-hidden pt-20">
+        <div className="absolute inset-0 bg-gradient-to-b from-purple-950/20 via-black to-black" />
+        
+        {/* Animated Grid */}
+        <div className="absolute inset-0 opacity-[0.03]" 
+          style={{
+            backgroundImage: `linear-gradient(rgba(147, 51, 234, 0.1) 1px, transparent 1px), 
+                             linear-gradient(90deg, rgba(147, 51, 234, 0.1) 1px, transparent 1px)`,
+            backgroundSize: '100px 100px'
+          }}
+        />
+
+        {/* Floating Gradient Orbs */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <motion.div
+            className="absolute top-1/4 left-1/4 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl"
+            animate={{
+              x: [0, 100, 0],
+              y: [0, -50, 0],
+              scale: [1, 1.2, 1],
+            }}
+            transition={{
+              duration: 20,
+              repeat: Infinity,
+              ease: 'easeInOut',
+            }}
+          />
+        </div>
+        
+        <motion.div
+          style={{ opacity, scale }}
+          className="relative z-10 container-custom text-center"
+        >
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.2 }}
+            className="mb-6"
+          >
+            <span className="inline-block px-6 py-2 border border-purple-500/30 rounded-full text-sm tracking-widest uppercase text-purple-400">
+              City Pro
+            </span>
+          </motion.div>
+
+          <motion.h1
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.3 }}
+            className="text-6xl md:text-8xl lg:text-9xl font-light tracking-tight mb-6"
+          >
+            Premium Performance
+          </motion.h1>
+
+          <motion.p
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.4 }}
+            className="text-xl md:text-2xl text-zinc-400 mb-12 max-w-3xl mx-auto"
+          >
+            The perfect balance of power, range, and sophistication for discerning riders
+          </motion.p>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.5 }}
+            className="flex flex-col sm:flex-row gap-6 justify-center items-center mb-16"
+          >
+            <button
+              onClick={() => setIsBookModalOpen(true)}
+              className="px-12 py-5 bg-white text-black font-medium rounded-full hover:bg-zinc-200 transition-all duration-300 flex items-center gap-3 shadow-2xl shadow-white/10"
+            >
+              <span className="tracking-wider uppercase text-sm">Book Test Ride</span>
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
+              </svg>
+            </button>
+
+            <Link
+              to="/configurator"
+              className="px-12 py-5 border border-white/20 rounded-full hover:bg-white/5 transition-all duration-300"
+            >
+              <span className="font-light text-sm tracking-widest uppercase">Configure Now</span>
+            </Link>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1, delay: 0.6 }}
+            className="text-5xl md:text-6xl font-light mb-4"
+          >
+            ₹99,999
+          </motion.div>
+          <p className="text-zinc-600 text-sm">*Ex-showroom price</p>
+        </motion.div>
+
+        {/* Scroll Indicator */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 1 }}
+          className="absolute bottom-12 left-1/2 -translate-x-1/2"
+        >
+          <div className="flex flex-col items-center gap-2">
+            <span className="text-xs tracking-widest uppercase text-zinc-600">Scroll to explore</span>
+            <motion.div
+              animate={{ y: [0, 10, 0] }}
+              transition={{ duration: 1.5, repeat: Infinity }}
+              className="w-6 h-10 border-2 border-white/20 rounded-full flex justify-center pt-2"
+            >
+              <div className="w-1 h-2 bg-white/60 rounded-full" />
+            </motion.div>
+          </div>
+        </motion.div>
+      </section>
+
+      {/* 360° View Section */}
+      <section className="py-32 relative overflow-hidden">
+        <div className="container-custom">
+          <motion.div
+            initial={{ opacity: 0, y: 60 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1 }}
+            className="text-center mb-20"
+          >
+            <h2 className="text-5xl md:text-7xl font-light tracking-tight mb-6">
+              Design Excellence
+            </h2>
+            <p className="text-zinc-500 text-lg">
+              Premium aesthetics meet functional perfection
+            </p>
+          </motion.div>
+
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1 }}
+            className="relative aspect-video rounded-3xl overflow-hidden border border-zinc-800/50 mb-16"
+          >
+            <img
+              src={selectedColor.image}
+              alt="City Pro"
+              className="w-full h-full object-cover"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
+          </motion.div>
+
+          {/* Color Selection */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1 }}
+            className="text-center"
+          >
+            <h3 className="text-2xl font-light mb-8">Choose Your Color</h3>
+            <div className="flex justify-center gap-6">
+              {colors.map((color) => (
+                <button
+                  key={color.name}
+                  onClick={() => setSelectedColor(color)}
+                  className="group relative"
+                >
+                  <div
+                    className={`w-16 h-16 rounded-full transition-all duration-300 ${
+                      selectedColor.name === color.name
+                        ? 'ring-4 ring-purple-400/40 scale-110'
+                        : 'ring-2 ring-zinc-800 hover:ring-purple-400/20'
+                    }`}
+                    style={{ backgroundColor: color.hex }}
+                  />
+                  <span className="absolute -bottom-8 left-1/2 -translate-x-1/2 text-xs text-zinc-600 group-hover:text-white transition-colors whitespace-nowrap">
+                    {color.name}
+                  </span>
+                </button>
+              ))}
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Key Features Grid */}
+      <section className="py-32 bg-zinc-950/50">
+        <div className="container-custom">
+          <motion.div
+            initial={{ opacity: 0, y: 60 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1 }}
+            className="text-center mb-20"
+          >
+            <h2 className="text-5xl md:text-7xl font-light tracking-tight mb-6">
+              Key Features
+            </h2>
+            <p className="text-zinc-500 text-lg">
+              Advanced technology for the modern rider
+            </p>
+          </motion.div>
+
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {features.map((feature, index) => (
+              <motion.div
+                key={feature.title}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: index * 0.1 }}
+                className="p-8 bg-zinc-900/50 backdrop-blur-sm rounded-2xl border border-zinc-800/50 hover:border-purple-500/30 transition-all duration-500 group"
+              >
+                <div className="text-purple-400 mb-6 group-hover:scale-110 transition-transform duration-300">
+                  {feature.icon}
+                </div>
+                <h3 className="text-2xl font-light mb-4">{feature.title}</h3>
+                <p className="text-zinc-500 leading-relaxed">{feature.description}</p>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Detailed Specifications */}
+      <section className="py-32">
+        <div className="container-custom">
+          <motion.div
+            initial={{ opacity: 0, y: 60 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1 }}
+            className="text-center mb-20"
+          >
+            <h2 className="text-5xl md:text-7xl font-light tracking-tight mb-6">
+              Specifications
+            </h2>
+            <p className="text-zinc-500 text-lg">
+              Engineered for excellence
+            </p>
+          </motion.div>
+
+          <div className="grid lg:grid-cols-2 gap-12">
+            {specifications.map((category, index) => (
+              <motion.div
+                key={category.category}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.8, delay: index * 0.1 }}
+                className="p-10 bg-zinc-900/50 backdrop-blur-sm rounded-2xl border border-zinc-800/50"
+              >
+                <h3 className="text-3xl font-light mb-8 pb-4 border-b border-zinc-800">
+                  {category.category}
+                </h3>
+                <div className="space-y-6">
+                  {category.specs.map((spec) => (
+                    <div key={spec.label} className="flex justify-between items-center group/spec">
+                      <div className="flex items-center gap-3">
+                        <span className="text-purple-400 group-hover/spec:scale-110 transition-transform">
+                          {spec.icon}
+                        </span>
+                        <span className="text-zinc-400">{spec.label}</span>
+                      </div>
+                      <span className="text-xl font-light">{spec.value}</span>
+                    </div>
+                  ))}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Comparison Section */}
+      <section className="py-32 bg-zinc-950/50">
+        <div className="container-custom">
+          <motion.div
+            initial={{ opacity: 0, y: 60 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1 }}
+            className="text-center mb-20"
+          >
+            <h2 className="text-5xl md:text-7xl font-light tracking-tight mb-6">
+              Compare Models
+            </h2>
+            <p className="text-zinc-500 text-lg mb-12">
+              Find the perfect electric scooter for your needs
+            </p>
+          </motion.div>
+
+          <div className="overflow-x-auto">
+            <table className="w-full text-left">
+              <thead>
+                <tr className="border-b border-zinc-800">
+                  <th className="py-6 px-6 text-zinc-500 font-light">Feature</th>
+                  <th className="py-6 px-6 text-center">
+                    <div className="text-2xl font-light mb-2">Eco Rider</div>
+                    <div className="text-blue-400 text-sm">₹79,999</div>
+                  </th>
+                  <th className="py-6 px-6 text-center">
+                    <div className="text-2xl font-light mb-2">City Pro</div>
+                    <div className="text-purple-400 text-sm">₹99,999</div>
+                  </th>
+                  <th className="py-6 px-6 text-center">
+                    <div className="text-2xl font-light mb-2">Velocity X</div>
+                    <div className="text-orange-400 text-sm">₹1,29,999</div>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  { feature: 'Range', eco: '80 km', city: '120 km', velocity: '150 km' },
+                  { feature: 'Top Speed', eco: '55 km/h', city: '65 km/h', velocity: '75 km/h' },
+                  { feature: '0-40 km/h', eco: '4.5s', city: '3.8s', velocity: '3.2s' },
+                  { feature: 'Motor Power', eco: '1.5 kW', city: '2.0 kW', velocity: '2.5 kW' },
+                  { feature: 'Battery', eco: '48V 30Ah', city: '60V 40Ah', velocity: '72V 50Ah' },
+                  { feature: 'Charging Time', eco: '4-5 hrs', city: '3-4 hrs', velocity: '2-3 hrs' },
+                ].map((row, index) => (
+                  <motion.tr
+                    key={row.feature}
+                    initial={{ opacity: 0, x: -20 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: index * 0.05 }}
+                    className="border-b border-zinc-800/50 hover:bg-zinc-900/30 transition-colors"
+                  >
+                    <td className="py-6 px-6 text-zinc-400">{row.feature}</td>
+                    <td className="py-6 px-6 text-center font-light">{row.eco}</td>
+                    <td className="py-6 px-6 text-center font-light text-purple-400">{row.city}</td>
+                    <td className="py-6 px-6 text-center font-light">{row.velocity}</td>
+                  </motion.tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.8 }}
+            className="text-center mt-16"
+          >
+            <Link
+              to="/#products"
+              className="inline-block px-12 py-5 border border-white/20 rounded-full hover:bg-white/5 transition-all duration-300"
+            >
+              <span className="font-light text-sm tracking-widest uppercase">View All Models</span>
+            </Link>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-32">
+        <div className="container-custom">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.95 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true }}
+            transition={{ duration: 1 }}
+            className="relative p-16 rounded-3xl overflow-hidden"
+          >
+            <div className="absolute inset-0 bg-gradient-to-br from-purple-500/20 to-pink-500/20" />
+            <div className="absolute inset-0 backdrop-blur-3xl" />
+            
+            <div className="relative z-10 text-center max-w-3xl mx-auto">
+              <h2 className="text-5xl md:text-7xl font-light tracking-tight mb-6">
+                Ready to Ride?
+              </h2>
+              <p className="text-xl text-zinc-400 mb-12">
+                Experience the City Pro yourself. Book a test ride today.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-6 justify-center">
+                <button
+                  onClick={() => setIsBookModalOpen(true)}
+                  className="px-12 py-5 bg-white text-black font-medium rounded-full hover:bg-zinc-200 transition-all duration-300 shadow-2xl shadow-white/10"
+                >
+                  <span className="tracking-wider uppercase text-sm">Book Test Ride</span>
+                </button>
+                <Link
+                  to="/contact"
+                  className="px-12 py-5 border border-white/20 rounded-full hover:bg-white/5 transition-all duration-300"
+                >
+                  <span className="font-light text-sm tracking-widest uppercase">Contact Us</span>
+                </Link>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      <Footer />
+      <BookingModal isOpen={isBookModalOpen} onClose={() => setIsBookModalOpen(false)} />
+    </div>
+  )
+}
+
+export default CityProPage

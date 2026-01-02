@@ -1,0 +1,57 @@
+<svg width="512" height="512" viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background circle -->
+  <circle cx="256" cy="256" r="256" fill="white"/>
+  
+  <!-- Front wheel -->
+  <circle cx="140" cy="380" r="45" fill="#6366F1" stroke="#1F2937" stroke-width="8"/>
+  <circle cx="140" cy="380" r="25" fill="white" stroke="#1F2937" stroke-width="4"/>
+  <circle cx="140" cy="380" r="8" fill="#1F2937"/>
+  
+  <!-- Rear wheel -->
+  <circle cx="400" cy="380" r="45" fill="#6366F1" stroke="#1F2937" stroke-width="8"/>
+  <circle cx="400" cy="380" r="25" fill="white" stroke="#1F2937" stroke-width="4"/>
+  <circle cx="400" cy="380" r="8" fill="#1F2937"/>
+  
+  <!-- Main body/platform -->
+  <path d="M185 335 C185 320 200 310 220 310 L360 310 C380 310 395 320 395 335 L395 350 L185 350 Z" 
+        fill="#7DD3FC" stroke="#1F2937" stroke-width="6" stroke-linejoin="round"/>
+  
+  <!-- Front body panel -->
+  <path d="M60 320 C60 280 80 250 120 240 C140 235 160 240 170 260 L170 320 C170 340 150 360 120 360 C90 360 60 350 60 320 Z" 
+        fill="#7DD3FC" stroke="#1F2937" stroke-width="6" stroke-linejoin="round"/>
+  
+  <!-- Seat -->
+  <ellipse cx="240" cy="250" rx="80" ry="35" fill="#FB923C" stroke="#1F2937" stroke-width="6"/>
+  
+  <!-- Seat cushion detail -->
+  <ellipse cx="240" cy="245" rx="70" ry="25" fill="#F97316" stroke="#1F2937" stroke-width="3"/>
+  
+  <!-- Handlebar stem -->
+  <path d="M380 180 L380 300" stroke="#1F2937" stroke-width="8" stroke-linecap="round"/>
+  
+  <!-- Handlebar -->
+  <ellipse cx="380" cy="170" rx="40" ry="20" fill="#7DD3FC" stroke="#1F2937" stroke-width="6"/>
+  
+  <!-- Handlebar grips -->
+  <rect x="340" y="160" width="15" height="20" rx="7" fill="#34D399" stroke="#1F2937" stroke-width="3"/>
+  <rect x="405" y="160" width="15" height="20" rx="7" fill="#34D399" stroke="#1F2937" stroke-width="3"/>
+  
+  <!-- Mirror -->
+  <circle cx="360" cy="150" r="8" fill="#E5E7EB" stroke="#1F2937" stroke-width="3"/>
+  <path d="M360 142 L355 130" stroke="#1F2937" stroke-width="3" stroke-linecap="round"/>
+  
+  <!-- Front light -->
+  <ellipse cx="95" cy="290" rx="20" ry="15" fill="#FEF3C7" stroke="#1F2937" stroke-width="4"/>
+  <ellipse cx="95" cy="290" rx="12" ry="8" fill="#FDE047"/>
+  
+  <!-- Side panels detail lines -->
+  <path d="M80 300 L140 300 M85 315 L145 315 M90 330 L150 330" 
+        stroke="#1F2937" stroke-width="3" stroke-linecap="round"/>
+  
+  <!-- Footrest -->
+  <rect x="200" y="340" width="120" height="15" rx="7" fill="#9CA3AF" stroke="#1F2937" stroke-width="4"/>
+  
+  <!-- Rear body connection -->
+  <path d="M320 310 C340 290 360 280 380 300" 
+        stroke="#1F2937" stroke-width="6" stroke-linecap="round" fill="none"/>
+</svg>
