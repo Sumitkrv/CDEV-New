@@ -73,7 +73,7 @@ const ContactPage = () => {
         <section className="py-32 bg-white relative">
           <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.02)_1px,transparent_1px)] bg-[size:100px_100px]" />
           
-          <div className="relative container-custom">
+          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -81,14 +81,14 @@ const ContactPage = () => {
               transition={{ duration: 0.8 }}
               className="text-center mb-24"
             >
-              <h1 className="font-light text-5xl md:text-7xl tracking-tight mb-6 text-gray-900">
+              <h1 className="font-light text-4xl sm:text-5xl md:text-6xl lg:text-7xl tracking-tight mb-6 text-gray-900">
                 Get in Touch
               </h1>
               <div className="w-16 h-px bg-black/20 mx-auto mb-8" />
-              <h2 className="font-light text-3xl md:text-4xl tracking-tight mb-8 text-gray-900">
+              <h2 className="font-light text-2xl sm:text-3xl md:text-4xl tracking-tight mb-8 text-gray-900">
                 We're Here to Help
               </h2>
-              <p className="text-gray-600 font-light text-lg leading-relaxed max-w-3xl mx-auto">
+              <p className="text-gray-600 font-light text-base sm:text-lg leading-relaxed max-w-3xl mx-auto">
                 Have questions about our vehicles? Need support? Our team is ready to assist you.
               </p>
             </motion.div>
@@ -107,7 +107,7 @@ const ContactPage = () => {
                     transition={{ delay: index * 0.1, duration: 0.6 }}
                     className="group block"
                   >
-                    <div className="border border-gray-200 p-10 hover:border-gray-400 transition-colors duration-500 text-center">
+                    <div className="border border-gray-200 p-8 md:p-10 hover:border-gray-400 transition-colors duration-500 text-center">
                       <div className="w-16 h-16 border border-gray-200 flex items-center justify-center mb-8 mx-auto group-hover:border-gray-400 transition-colors duration-500">
                         <IconComponent className="w-8 h-8 text-gray-400 group-hover:text-gray-900 transition-colors duration-500" strokeWidth={1} />
                       </div>
@@ -129,7 +129,7 @@ const ContactPage = () => {
 
         {/* Contact Form */}
         <section className="py-32 bg-black relative">
-          <div className="relative container-custom">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="max-w-4xl mx-auto">
               <motion.div
                 initial={{ opacity: 0, y: 30 }}
@@ -141,7 +141,7 @@ const ContactPage = () => {
                   <div className="w-12 h-12 border border-zinc-800 flex items-center justify-center">
                     <Send className="w-6 h-6 text-zinc-600" strokeWidth={1} />
                   </div>
-                  <h2 className="font-light text-4xl tracking-tight text-white">Send Us a Message</h2>
+                  <h2 className="font-light text-3xl sm:text-4xl tracking-tight text-white">Send Us a Message</h2>
                 </div>
                 <p className="text-zinc-400 font-light text-lg mb-12 leading-relaxed">
                   Fill out the form below and we'll get back to you within 24 hours
@@ -267,7 +267,7 @@ const ContactPage = () => {
         <section className="py-32 bg-white relative">
           <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.02)_1px,transparent_1px)] bg-[size:100px_100px]" />
           
-          <div className="relative container-custom">
+          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -275,7 +275,7 @@ const ContactPage = () => {
               transition={{ duration: 0.8 }}
               className="text-center"
             >
-              <h2 className="font-light text-4xl md:text-5xl tracking-tight mb-6 text-gray-900">
+              <h2 className="font-light text-3xl sm:text-4xl md:text-5xl tracking-tight mb-6 text-gray-900">
                 Quick Answers
               </h2>
               <div className="w-16 h-px bg-black/20 mx-auto mb-8" />

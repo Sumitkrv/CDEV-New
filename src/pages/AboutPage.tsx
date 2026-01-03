@@ -32,10 +32,10 @@ const AboutPage = () => {
   ]
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-white overflow-x-hidden">
       <Header />
       
-      <main className="page-content">
+      <main className="page-content overflow-hidden">
         {/* Hero Section */}
         <section className="py-32 bg-black relative overflow-hidden">
           <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:100px_100px]" />
@@ -57,7 +57,7 @@ const AboutPage = () => {
             />
           </div>
           
-          <div className="relative container-custom px-4">
+          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -96,7 +96,7 @@ const AboutPage = () => {
           return (
             <section 
               key={index} 
-              className={`py-24 md:py-32 relative ${isEven ? 'bg-white' : 'bg-gray-50'}`}
+              className={`py-24 md:py-32 relative ${isEven ? 'bg-white' : 'bg-gray-50'} overflow-hidden`}
             >
               <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.02)_1px,transparent_1px)] bg-[size:100px_100px]" />
               
@@ -107,7 +107,7 @@ const AboutPage = () => {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, margin: '-100px' }}
                     transition={{ duration: 0.8 }}
-                    className="lg:w-1/2 w-full"
+                    className="lg:w-1/2 w-full px-4 sm:px-0"
                   >
                     {/* Icon */}
                     <motion.div
@@ -150,10 +150,10 @@ const AboutPage = () => {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, margin: '-100px' }}
                     transition={{ duration: 0.8, delay: 0.2 }}
-                    className="relative h-[350px] md:h-[450px] lg:h-[550px] group lg:w-1/2 w-full"
+                    className="relative h-[350px] md:h-[450px] lg:h-[550px] group lg:w-1/2 w-full px-4 sm:px-0"
                   >
                     <motion.div 
-                      className="absolute -inset-4 bg-gradient-to-br from-emerald-500/20 to-green-500/20 rounded-3xl blur-2xl opacity-0 group-hover:opacity-60 transition-opacity duration-700"
+                      className="absolute inset-0 sm:-inset-4 bg-gradient-to-br from-emerald-500/20 to-green-500/20 rounded-3xl blur-2xl opacity-0 group-hover:opacity-60 transition-opacity duration-700"
                       animate={{
                         scale: [1, 1.05, 1],
                       }}
@@ -200,7 +200,7 @@ const AboutPage = () => {
             />
           </div>
           
-          <div className="relative px-4 text-center">
+          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
