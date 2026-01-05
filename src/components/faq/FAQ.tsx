@@ -7,43 +7,23 @@ const FAQSection = () => {
   const faqs = [
     {
       question: "What is the range of the electric scooter on a full charge?",
-      answer: "Our electric scooters offer a range of up to 120 km on a single charge, depending on the model and riding conditions. The actual range may vary based on factors like riding style, terrain, payload, and weather conditions."
+      answer: "On a full charge, the electric scooter offers a range of approximately XX–XX km. Actual range may vary depending on riding conditions, speed, load, and road terrain."
     },
     {
-      question: "How long does it take to charge the battery?",
-      answer: "Charging time varies by method: Standard home charging (5A socket) takes 4-6 hours, fast charging at our stations takes 1-2 hours, and battery swapping takes just 2 minutes for instant power."
+      question: "How long does it take to fully charge the scooter?",
+      answer: "The scooter takes around 4–6 hours to get fully charged. It can be easily charged using a standard home power socket."
     },
     {
-      question: "What subsidies are available for purchasing an EV?",
-      answer: "You can avail up to ₹15,000 under the FAME II scheme from the central government, plus additional state subsidies up to ₹10,000 depending on your location. We also offer exchange bonuses and corporate discounts."
+      question: "Does this electric scooter require a license or registration?",
+      answer: "Low-speed models do not require a license or registration. For high-speed models, registration and a valid driving license are required as per government regulations."
     },
     {
-      question: "What is the warranty on the battery?",
-      answer: "We provide a comprehensive 3-year warranty on the battery covering manufacturing defects. The battery is designed to retain 70% capacity after 50,000 km or 3 years, whichever comes first."
+      question: "What is the battery life and warranty?",
+      answer: "The battery typically lasts 3–4 years with proper usage and maintenance. The scooter also comes with a battery warranty for added peace of mind."
     },
     {
-      question: "How much can I save compared to a petrol scooter?",
-      answer: "You can save up to 80% on fuel costs with our electric scooters. The running cost is approximately ₹0.50 per km compared to ₹2-3 per km for petrol scooters. Over 3 years, you can save over ₹80,000 in fuel costs alone."
-    },
-    {
-      question: "Where can I charge my electric scooter?",
-      answer: "You can charge at home using a regular 5A socket, at our 500+ fast charging stations across 50+ cities, or use battery swapping facilities available at select locations. Our mobile app helps you find the nearest charging point."
-    },
-    {
-      question: "What is the top speed of the scooter?",
-      answer: "Our scooters have a top speed of 60-75 km/h depending on the model, which is perfect for city commuting and complies with Indian traffic regulations."
-    },
-    {
-      question: "Is maintenance expensive for electric scooters?",
-      answer: "No, electric scooters have significantly lower maintenance costs compared to petrol vehicles. There's no engine oil, spark plugs, or complex transmission systems. Regular maintenance includes brake checks, tire rotation, and software updates."
-    },
-    {
-      question: "Can I test ride before purchasing?",
-      answer: "Absolutely! We offer free test rides at all our dealerships. You can book a test ride through our website, mobile app, or by visiting the nearest showroom."
-    },
-    {
-      question: "What financing options are available?",
-      answer: "We offer flexible EMI plans starting from 6 months up to 48 months with interest rates as low as 7% p.a. We've partnered with leading banks and NBFCs to provide hassle-free financing with minimal documentation."
+      question: "Is maintenance expensive for an electric scooter?",
+      answer: "No. Electric scooters require minimal maintenance compared to petrol scooters, as they have fewer moving parts and no engine oil or clutch system."
     }
   ]
 
