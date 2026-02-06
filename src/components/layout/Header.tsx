@@ -210,186 +210,181 @@ const Header = () => {
         transition={{ duration: 0.6, ease: [0.25, 0.46, 0.45, 0.94] }}
         className="fixed top-0 left-0 right-0 z-50 bg-black/95 backdrop-blur-2xl border-b border-gray-800"
       >
+        {/* Animated gradient line */}
+        <motion.div 
+          className="absolute top-0 left-0 right-0 h-0.5 bg-gradient-to-r from-primary via-accent to-primary"
+          animate={{
+            backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
+          }}
+          transition={{
+            duration: 3,
+            repeat: Infinity,
+            ease: "linear"
+          }}
+          style={{
+            backgroundSize: '200% 100%'
+          }}
+        />
+        
         <nav className="container-custom relative py-5">
-          <div className="flex items-center justify-between gap-8">
-            {/* Logo - Left */}
-            <Link to="/" className="flex items-center group relative z-10 flex-shrink-0">
-              <img 
-                src="/images/CD EV logo.svg" 
-                alt="Consider Done EV" 
-                className="h-8 w-auto transition-transform duration-300 group-hover:scale-105"
-              />
-            </Link>
+        <div className="flex items-center justify-between gap-8">
+          {/* Logo - Left */}
+          <Link to="/" className="flex items-center group relative z-10 flex-shrink-0">
+            <img 
+              src="/images/CD EV logo.svg" 
+              alt="Consider Done EV" 
+              className="h-8 w-auto transition-transform duration-300 group-hover:scale-105"
+            />
+          </Link>
 
-            {/* Desktop Navigation - Center/Right */}
-            <div className="hidden lg:flex items-center space-x-1 flex-1 justify-center">
-              {navLinks.map((link, index) => {
-                const isActive = location.pathname === link.path
-                
-                return (
-                  <motion.div
-                    key={link.name}
-                    initial={{ opacity: 0, y: -20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.1, duration: 0.5 }}
-                  >
-                    <Link
-                      to={link.path}
-                      onClick={() => handleNavClick(link)}
-                      onMouseEnter={() => setHoveredLink(link.name)}
-                      onMouseLeave={() => setHoveredLink(null)}
-                      className={`relative group px-5 py-2.5 rounded-xl font-semibold text-sm tracking-wide transition-all duration-300 flex items-center space-x-2 ${
-                        isActive 
-                          ? 'text-white bg-gradient-to-r from-emerald-500 to-green-500 shadow-lg shadow-emerald-500/25' 
-                          : 'text-white hover:text-white hover:bg-emerald-500/20'
-                      }`}
-                    >
-                      <span className="relative z-10">
-                        {link.icon}
-                      </span>
-                      <span className="relative z-10 whitespace-nowrap">
-                        {link.name}
-                      </span>
-                      
-                      {/* Hover indicator */}
-                      {!isActive && hoveredLink === link.name && (
-                        <motion.div
-                          layoutId="navHover"
-                          className="absolute inset-0 bg-emerald-500/30 rounded-xl"
-                          transition={{ type: "spring", stiffness: 400, damping: 30 }}
-                        />
-                      )}
-                    </Link>
-                  </motion.div>
-                )
-              })}
-            </div>
-
-            {/* Book Button - Right */}
-            <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.4 }}
-              className="hidden lg:block flex-shrink-0"
-            >
-              <Link
-                to="/"
-                onClick={() => handleNavClick({ path: '/', scrollTo: 'products' })}
-                className="flex items-center justify-center px-6 py-3 bg-gradient-to-r from-emerald-500 to-green-500 text-white font-semibold text-sm rounded-xl shadow-lg shadow-emerald-500/25 hover:shadow-xl hover:shadow-emerald-500/30 hover:scale-105 transition-all duration-300"
-              >
-                Book Now
-              </Link>
-            </motion.div>
-
-            {/* Mobile Menu Button */}
-            <motion.button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden relative w-12 h-12 flex flex-col items-center justify-center space-y-1.5 rounded-xl bg-white/10 hover:bg-emerald-500/30 transition-all duration-300 shadow-md"
-              aria-label="Toggle menu"
-              whileTap={{ scale: 0.9 }}
-            >
-              <motion.span
-                animate={mobileMenuOpen ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }}
-                className="w-6 h-0.5 bg-white transition-all rounded-full"
-              />
-              <motion.span
-                animate={mobileMenuOpen ? { opacity: 0, scale: 0 } : { opacity: 1, scale: 1 }}
-                className="w-6 h-0.5 bg-white transition-all rounded-full"
-              />
-              <motion.span
-                animate={mobileMenuOpen ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }}
-                className="w-6 h-0.5 bg-white transition-all rounded-full"
-              />
-            </motion.button>
-          </div>
-        </nav>
-
-        {/* Mobile Menu */}
-        <AnimatePresence>
-          {mobileMenuOpen && (
-            <>
-              {/* Backdrop */}
-              <motion.div
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                onClick={() => setMobileMenuOpen(false)}
-                className="lg:hidden fixed inset-0 bg-black/40 backdrop-blur-sm z-40"
-              />
+          {/* Desktop Navigation - Center/Right */}
+          <div className="hidden lg:flex items-center space-x-1 flex-1 justify-center">
+            {navLinks.map((link, index) => {
+              const isActive = location.pathname === link.path
               
-              {/* Menu Panel */}
-              <motion.div
-                initial={{ opacity: 0, y: -20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                className="lg:hidden absolute left-0 right-0 bg-black/95 backdrop-blur-xl border-t border-b border-gray-800 shadow-2xl shadow-black/10 z-50"
-              >
-                <div className="container-custom py-6 space-y-1">
-                  {navLinks.map((link, index) => {
-                    const isActive = location.pathname === link.path
-                    
-                    return (
-                      <motion.div
-                        key={link.name}
-                        initial={{ opacity: 0, x: -30 }}
-                        animate={{ opacity: 1, x: 0 }}
-                        transition={{ delay: index * 0.1, type: "spring", stiffness: 200 }}
-                      >
-                        <Link
-                          to={link.path}
-                          onClick={() => handleNavClick(link)}
-                          className={`flex items-center space-x-3 text-lg font-semibold py-4 px-5 rounded-xl transition-all duration-300 ${
-                            isActive 
-                              ? 'text-white bg-gradient-to-r from-emerald-500 to-green-500 shadow-lg shadow-emerald-500/30' 
-                              : 'text-white hover:text-white hover:bg-emerald-500/20'
-                          }`}
-                        >
-                          <motion.span
-                            animate={isActive ? { rotate: 360 } : {}}
-                            transition={{ duration: 0.5 }}
-                          >
-                            {link.icon}
-                          </motion.span>
-                          <span>{link.name}</span>
-                          {isActive && (
-                            <motion.div
-                              initial={{ scale: 0 }}
-                              animate={{ scale: 1 }}
-                              className="ml-auto w-2 h-2 bg-white rounded-full shadow-lg"
-                            />
-                          )}
-                        </Link>
-                      </motion.div>
-                    )
-                  })}
-                  
-                  {/* Mobile Book Button */}
-                  <motion.div
-                    initial={{ opacity: 0, y: 10 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: 0.3 }}
-                    className="pt-4"
+              return (
+                <motion.div
+                  key={link.name}
+                  initial={{ opacity: 0, y: -20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: index * 0.1, duration: 0.5 }}
+                >
+                  <Link
+                    to={link.path}
+                    onClick={() => handleNavClick(link)}
+                    onMouseEnter={() => setHoveredLink(link.name)}
+                    onMouseLeave={() => setHoveredLink(null)}
+                    className={`relative group px-5 py-2.5 rounded-xl font-semibold text-sm tracking-wide transition-all duration-300 flex items-center space-x-2 ${
+                      isActive 
+                        ? 'text-white bg-gradient-to-r from-primary to-accent' 
+                        : 'text-white hover:text-accent hover:bg-white/10'
+                    }`}
                   >
-                    <Link
-                      to="/"
-                      onClick={() => {
-                        handleNavClick({ path: '/', scrollTo: 'products' })
-                        setMobileMenuOpen(false)
-                      }}
-                      className="flex items-center justify-center space-x-2 text-lg font-semibold py-4 px-5 bg-gradient-to-r from-emerald-500 to-green-500 text-white rounded-xl shadow-lg shadow-emerald-500/25 hover:shadow-xl hover:shadow-emerald-500/30 transition-all duration-300"
+                    <span className="relative z-10">
+                      {link.icon}
+                    </span>
+                    <span className="relative z-10 whitespace-nowrap">
+                      {link.name}
+                    </span>
+                    
+                    {/* Hover indicator */}
+                    {!isActive && hoveredLink === link.name && (
+                      <motion.div
+                        layoutId="navHover"
+                        className="absolute inset-0 bg-gradient-to-r from-primary/20 to-accent/20 rounded-xl"
+                        transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                      />
+                    )}
+                  </Link>
+                </motion.div>
+              )
+            })}
+          </div>
+
+          {/* Book Button - Right */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.4 }}
+            className="hidden lg:block flex-shrink-0"
+          >
+            <Link
+              to="/"
+              onClick={() => handleNavClick({ path: '/', scrollTo: 'products' })}
+              className="flex items-center justify-center px-6 py-3 bg-gradient-to-r from-primary to-accent text-white font-semibold text-sm rounded-xl shadow-lg shadow-primary/25 hover:shadow-xl hover:shadow-primary/30 hover:scale-105 transition-all duration-300"
+            >
+              Book Now
+            </Link>
+          </motion.div>
+        </div>
+
+        {/* Mobile Menu Button */}
+        <motion.button
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          className="lg:hidden relative w-12 h-12 flex flex-col items-center justify-center space-y-1.5 rounded-xl bg-white/10 hover:bg-white/20 transition-all duration-300 shadow-md"
+          aria-label="Toggle menu"
+          whileTap={{ scale: 0.9 }}
+        >
+          <motion.span
+            animate={mobileMenuOpen ? { rotate: 45, y: 7 } : { rotate: 0, y: 0 }}
+            className="w-6 h-0.5 bg-white transition-all rounded-full"
+          />
+          <motion.span
+            animate={mobileMenuOpen ? { opacity: 0, scale: 0 } : { opacity: 1, scale: 1 }}
+            className="w-6 h-0.5 bg-white transition-all rounded-full"
+          />
+          <motion.span
+            animate={mobileMenuOpen ? { rotate: -45, y: -7 } : { rotate: 0, y: 0 }}
+            className="w-6 h-0.5 bg-white transition-all rounded-full"
+          />
+        </motion.button>
+      </nav>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <>
+            {/* Backdrop */}
+            <motion.div
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={() => setMobileMenuOpen(false)}
+              className="lg:hidden fixed inset-0 bg-black/20 backdrop-blur-sm z-40"
+            />
+            
+            {/* Menu Panel */}
+            <motion.div
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -20 }}
+              transition={{ type: "spring", stiffness: 300, damping: 30 }}
+              className="lg:hidden absolute left-0 right-0 bg-black/98 backdrop-blur-xl border-t border-b border-gray-800 shadow-2xl shadow-black/10 z-50"
+            >
+              <div className="container-custom py-6 space-y-1">
+                {navLinks.map((link, index) => {
+                  const isActive = location.pathname === link.path
+                  
+                  return (
+                    <motion.div
+                      key={link.name}
+                      initial={{ opacity: 0, x: -30 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ delay: index * 0.1, type: "spring", stiffness: 200 }}
                     >
-                      <span>Book Now</span>
-                      <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                      </svg>
-                    </Link>
-                  </motion.div>
-                </div>
-              </motion.div>
-            </>
-          )}
-        </AnimatePresence>
+                      <Link
+                        to={link.path}
+                        onClick={() => handleNavClick(link)}
+                        className={`flex items-center space-x-3 text-lg font-semibold py-4 px-5 rounded-xl transition-all duration-300 ${
+                          isActive 
+                            ? 'text-white bg-gradient-to-r from-primary to-accent shadow-lg shadow-primary/30' 
+                            : 'text-white hover:text-accent hover:bg-white/10'
+                        }`}
+                      >
+                        <motion.span
+                          animate={isActive ? { rotate: 360 } : {}}
+                          transition={{ duration: 0.5 }}
+                        >
+                          {link.icon}
+                        </motion.span>
+                        <span>{link.name}</span>
+                        {isActive && (
+                          <motion.div
+                            initial={{ scale: 0 }}
+                            animate={{ scale: 1 }}
+                            className="ml-auto w-2 h-2 bg-white rounded-full shadow-lg"
+                          />
+                        )}
+                      </Link>
+                    </motion.div>
+                  )
+                })}
+                
+              </div>
+            </motion.div>
+          </>
+        )}
+      </AnimatePresence>
       </motion.header>
     </>
   )

@@ -1,31 +1,37 @@
 import { motion } from 'framer-motion'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
+import axios from 'axios'
+
+interface FAQ {
+  id: number
+  question: string
+  answer: string
+}
+
+const STRAPI_URL = 'http://localhost:1337'
 
 const FAQSection = () => {
   const [openIndex, setOpenIndex] = useState<number | null>(0)
+  const [faqs, setFaqs] = useState<FAQ[]>([])
 
-  const faqs = [
-    {
-      question: "What is the range of the electric scooter on a full charge?",
-      answer: "On a full charge, the electric scooter offers a range of approximately XX–XX km. Actual range may vary depending on riding conditions, speed, load, and road terrain."
-    },
-    {
-      question: "How long does it take to fully charge the scooter?",
-      answer: "The scooter takes around 4–6 hours to get fully charged. It can be easily charged using a standard home power socket."
-    },
-    {
-      question: "Does this electric scooter require a license or registration?",
-      answer: "Low-speed models do not require a license or registration. For high-speed models, registration and a valid driving license are required as per government regulations."
-    },
-    {
-      question: "What is the battery life and warranty?",
-      answer: "The battery typically lasts 3–4 years with proper usage and maintenance. The scooter also comes with a battery warranty for added peace of mind."
-    },
-    {
-      question: "Is maintenance expensive for an electric scooter?",
-      answer: "No. Electric scooters require minimal maintenance compared to petrol scooters, as they have fewer moving parts and no engine oil or clutch system."
+  // Fetch FAQs from Strapi
+  useEffect(() => {
+    const fetchFaqs = async () => {
+      try {
+        const response = await axios.get(`${STRAPI_URL}/api/home?populate[faqs]=*`)
+        const data = response.data.data
+        
+        if (data.faqs && data.faqs.length > 0) {
+          setFaqs(data.faqs)
+        }
+      } catch (err) {
+        console.error('Error fetching FAQs:', err)
+        setFaqs([])
+      }
     }
-  ]
+    
+    fetchFaqs()
+  }, [])
 
   return (
     <section id="faq" className="py-32 bg-white text-black relative">

@@ -1,20 +1,58 @@
 import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion'
 import { useState, useEffect, useRef } from 'react'
+import axios from 'axios'
+
+interface GalleryImage {
+  src: string
+  title: string
+  category: string
+  color: string
+}
+
+const STRAPI_URL = 'http://localhost:1337'
+
+const defaultGalleryImages: GalleryImage[] = [
+  { src: '/images/CD_EV15783.jpg', title: 'Aerodynamic Excellence', category: 'Design', color: 'from-blue-500/20 to-cyan-500/20' },
+  { src: '/images/CD_EV15757.jpg', title: 'Intelligent Dashboard', category: 'Technology', color: 'from-purple-500/20 to-pink-500/20' },
+  { src: '/images/CD_EV15705.jpg', title: 'Dynamic Performance', category: 'Power', color: 'from-orange-500/20 to-red-500/20' },
+]
 
 const ProductGallery = () => {
   const [selectedImage, setSelectedImage] = useState<number | null>(null)
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
   const [imageLoaded, setImageLoaded] = useState<{[key: number]: boolean}>({})
+  const [galleryImages, setGalleryImages] = useState<GalleryImage[]>(defaultGalleryImages)
   const constraintsRef = useRef(null)
 
   // Debug selectedImage state
   console.log('ProductGallery render - selectedImage:', selectedImage)
 
-  const galleryImages = [
-    { src: '/images/CD_EV15555.jpg', title: 'Aerodynamic Excellence', category: 'Design', color: 'from-blue-500/20 to-cyan-500/20' },
-    { src: '/images/CD_EV15757.jpg', title: 'Intelligent Dashboard', category: 'Technology', color: 'from-purple-500/20 to-pink-500/20' },
-    { src: '/images/nohat_upscaled_x4_5CwHTQ.jpg', title: 'Dynamic Performance', category: 'Power', color: 'from-orange-500/20 to-red-500/20' },
-  ]
+  // Fetch gallery images from Strapi
+  useEffect(() => {
+    const fetchGalleryImages = async () => {
+      try {
+        const response = await axios.get(`${STRAPI_URL}/api/home?populate[galleryImages][populate]=*`)
+        const data = response.data.data
+        
+        if (data.galleryImages && data.galleryImages.length > 0) {
+          const images = data.galleryImages.map((item: any) => ({
+            src: item.image?.url?.startsWith('http') 
+              ? item.image.url 
+              : `${STRAPI_URL}${item.image?.url || ''}`,
+            title: item.title,
+            category: item.category,
+            color: item.color || 'from-blue-500/20 to-cyan-500/20'
+          }))
+          setGalleryImages(images)
+        }
+      } catch (err) {
+        console.error('Error fetching gallery images:', err)
+        // Keep default data on error
+      }
+    }
+    
+    fetchGalleryImages()
+  }, [])
 
   const nextImage = () => {
     if (selectedImage !== null) {
@@ -35,7 +73,7 @@ const ProductGallery = () => {
       img.onload = () => setImageLoaded(prev => ({ ...prev, [index]: true }))
       img.src = image.src
     })
-  }, [])
+  }, [galleryImages])
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {

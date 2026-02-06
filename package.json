@@ -12,6 +12,7 @@
     "optimize-images": "node scripts/optimize-images.js"
   },
   "dependencies": {
+    "axios": "^1.13.4",
     "framer-motion": "^10.16.16",
     "leaflet": "^1.9.4",
     "lucide-react": "^0.555.0",

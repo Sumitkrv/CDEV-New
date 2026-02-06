@@ -1,41 +1,134 @@
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Target, Zap, Users, Award, ArrowRight } from 'lucide-react'
+import axios from 'axios'
 import Header from '../components/layout/Header'
 import Footer from '../components/layout/Footer'
 
+interface Section {
+  id: number
+  title: string
+  description: string
+  image: {
+    url: string
+    alternativeText?: string
+  } | null
+  icon: string
+}
+
+interface AboutData {
+  heroTitle: string
+  heroSubtitle: string
+  heroDescription: string
+  ctaTitle: string
+  ctaDescription: string
+  sections: Section[]
+}
+
+const iconMap: Record<string, any> = {
+  Target,
+  Zap,
+  Users,
+  Award
+}
+
 const AboutPage = () => {
-  const sections = [
-    {
-      icon: Target,
-      title: "Our Vision: Cleaner Rides, Better Future",
-      description: "We started with a simple goal — to reduce pollution and make daily commuting smarter. Electric scooties are our way of creating a cleaner, more sustainable future for cities and communities.",
-      image: "/images/CD_EV15783.jpg"
-    },
-    {
-      icon: Zap,
-      title: "Why Scooty? Why Now?",
-      description: "A scooty is often the first vehicle people own — for middle-class families, students, delivery partners, and young professionals. We believed this essential vehicle could be smarter, cleaner, and more affordable without compromising convenience.",
-      image: "/images/CD_EV15757.jpg"
-    },
-    {
-      icon: Users,
-      title: "Our Idea: New Tech for a New Generation",
-      description: "The world is moving forward, so should our rides. Our electric scooties are designed for the tech-savvy, urban lifestyle — easy to use, low-maintenance, and budget-friendly.",
-      image: "/images/CD_EV15705.jpg"
-    },
-    {
-      icon: Award,
-      title: "Our Commitment: Practical, Reliable, Everyday",
-      description: "We focus on creating vehicles that fit real life — no unnecessary complexity, just smart, dependable technology. With every ride, we aim to make commuting easier, greener, and more enjoyable.",
-      image: "/images/CD_EV15828.jpg"
+  const [aboutData, setAboutData] = useState<AboutData | null>(null)
+  const [loading, setLoading] = useState(true)
+
+  const STRAPI_URL = 'http://localhost:1337'
+
+  useEffect(() => {
+    const fetchAboutData = async () => {
+      try {
+        const response = await axios.get(`${STRAPI_URL}/api/about?populate[sections][populate]=*`)
+        const data = response.data.data
+        
+        console.log('Strapi Response:', data)
+        
+        // Map Strapi data to our component structure
+        setAboutData({
+          heroTitle: data.heroTitle || 'Urban Mobility',
+          heroSubtitle: data.heroSubtitle || 'Pioneering Sustainable',
+          heroDescription: data.heroDescription || 'Leading India\'s transition to electric mobility',
+          ctaTitle: data.ctaTitle || 'Ready to Make the Switch?',
+          ctaDescription: data.ctaDescription || 'Experience the difference',
+          sections: data.sections?.map((section: any) => ({
+            id: section.id,
+            title: section.title,
+            description: section.description,
+            image: section.image ? {
+              url: section.image.url.startsWith('http') 
+                ? section.image.url 
+                : `${STRAPI_URL}${section.image.url}`,
+              alternativeText: section.image.alternativeText
+            } : null,
+            icon: section.icon || 'Target'
+          })) || []
+        })
+      } catch (err) {
+        console.error('Error fetching about data:', err)
+        // Fallback to default content
+        setAboutData({
+          heroTitle: 'Urban Mobility',
+          heroSubtitle: 'Pioneering Sustainable',
+          heroDescription: 'Leading India\'s transition to electric mobility through innovative technology, sustainable practices, and customer-centric solutions.',
+          ctaTitle: 'Ready to Make the Switch?',
+          ctaDescription: 'Experience the difference. Join thousands who\'ve already chosen a cleaner, smarter way to commute.',
+          sections: [
+            {
+              id: 1,
+              icon: 'Target',
+              title: "Our Vision: Cleaner Rides, Better Future",
+              description: "We started with a simple goal — to reduce pollution and make daily commuting smarter. Electric scooties are our way of creating a cleaner, more sustainable future for cities and communities.",
+              image: { url: "/images/CD_EV15783.jpg", alternativeText: "Vision" }
+            },
+            {
+              id: 2,
+              icon: 'Zap',
+              title: "Why Scooty? Why Now?",
+              description: "A scooty is often the first vehicle people own — for middle-class families, students, delivery partners, and young professionals. We believed this essential vehicle could be smarter, cleaner, and more affordable without compromising convenience.",
+              image: { url: "/images/CD_EV15757.jpg", alternativeText: "Why Scooty" }
+            },
+            {
+              id: 3,
+              icon: 'Users',
+              title: "Our Idea: New Tech for a New Generation",
+              description: "The world is moving forward, so should our rides. Our electric scooties are designed for the tech-savvy, urban lifestyle — easy to use, low-maintenance, and budget-friendly.",
+              image: { url: "/images/CD_EV15705.jpg", alternativeText: "New Tech" }
+            },
+            {
+              id: 4,
+              icon: 'Award',
+              title: "Our Commitment: Practical, Reliable, Everyday",
+              description: "We focus on creating vehicles that fit real life — no unnecessary complexity, just smart, dependable technology. With every ride, we aim to make commuting easier, greener, and more enjoyable.",
+              image: { url: "/images/CD_EV15828.jpg", alternativeText: "Commitment" }
+            }
+          ]
+        })
+      } finally {
+        setLoading(false)
+      }
     }
-  ]
+
+    fetchAboutData()
+  }, [])
+
+  if (loading) {
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-emerald-500"></div>
+      </div>
+    )
+  }
+
+  if (!aboutData) return null
 
   return (
-    <div className="min-h-screen bg-white overflow-x-hidden">
+    <div className="min-h-screen bg-white">
       <Header />
       
-      <main className="page-content overflow-hidden">
+      <main className="page-content">
         {/* Hero Section */}
         <section className="py-32 bg-black relative overflow-hidden">
           <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:100px_100px]" />
@@ -57,7 +150,7 @@ const AboutPage = () => {
             />
           </div>
           
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="relative container-custom px-4">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -66,9 +159,9 @@ const AboutPage = () => {
               className="text-center max-w-5xl mx-auto"
             >
               <h1 className="font-light text-4xl md:text-6xl lg:text-7xl tracking-tight mb-12 text-white leading-tight">
-                Pioneering Sustainable<br/>
+                {aboutData.heroSubtitle && <>{aboutData.heroSubtitle}<br/></>}
                 <span className="inline-block mt-3 text-5xl md:text-7xl lg:text-8xl bg-gradient-to-r from-emerald-400 via-green-400 to-emerald-500 bg-clip-text text-transparent">
-                  Urban Mobility
+                  {aboutData.heroTitle}
                 </span>
               </h1>
               
@@ -81,22 +174,21 @@ const AboutPage = () => {
               />
               
               <p className="text-white/70 font-light text-lg md:text-xl leading-relaxed max-w-3xl mx-auto">
-                Leading India's transition to electric mobility through innovative technology,<br className="hidden md:block"/> 
-                sustainable practices, and customer-centric solutions.
+                {aboutData.heroDescription}
               </p>
             </motion.div>
           </div>
         </section>
 
         {/* Story Sections */}
-        {sections.map((section, index) => {
-          const IconComponent = section.icon
+        {aboutData.sections.map((section, index) => {
+          const IconComponent = iconMap[section.icon] || Target
           const isEven = index % 2 === 0
           
           return (
             <section 
-              key={index} 
-              className={`py-24 md:py-32 relative ${isEven ? 'bg-white' : 'bg-gray-50'} overflow-hidden`}
+              key={section.id} 
+              className={`py-24 md:py-32 relative ${isEven ? 'bg-white' : 'bg-gray-50'}`}
             >
               <div className="absolute inset-0 bg-[linear-gradient(rgba(0,0,0,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(0,0,0,0.02)_1px,transparent_1px)] bg-[size:100px_100px]" />
               
@@ -107,7 +199,7 @@ const AboutPage = () => {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, margin: '-100px' }}
                     transition={{ duration: 0.8 }}
-                    className="lg:w-1/2 w-full px-4 sm:px-0"
+                    className="lg:w-1/2 w-full"
                   >
                     {/* Icon */}
                     <motion.div
@@ -150,10 +242,10 @@ const AboutPage = () => {
                     whileInView={{ opacity: 1, x: 0 }}
                     viewport={{ once: true, margin: '-100px' }}
                     transition={{ duration: 0.8, delay: 0.2 }}
-                    className="relative h-[350px] md:h-[450px] lg:h-[550px] group lg:w-1/2 w-full px-4 sm:px-0"
+                    className="relative h-[350px] md:h-[450px] lg:h-[550px] group lg:w-1/2 w-full"
                   >
                     <motion.div 
-                      className="absolute inset-0 sm:-inset-4 bg-gradient-to-br from-emerald-500/20 to-green-500/20 rounded-3xl blur-2xl opacity-0 group-hover:opacity-60 transition-opacity duration-700"
+                      className="absolute -inset-4 bg-gradient-to-br from-emerald-500/20 to-green-500/20 rounded-3xl blur-2xl opacity-0 group-hover:opacity-60 transition-opacity duration-700"
                       animate={{
                         scale: [1, 1.05, 1],
                       }}
@@ -164,11 +256,17 @@ const AboutPage = () => {
                       }}
                     />
                     <div className="relative h-full border-2 border-gray-200 rounded-3xl overflow-hidden group-hover:border-emerald-500/40 transition-colors duration-500 shadow-xl">
-                      <img 
-                        src={section.image}
-                        alt={section.title}
-                        className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
-                      />
+                      {section.image ? (
+                        <img 
+                          src={section.image.url}
+                          alt={section.image.alternativeText || section.title}
+                          className="w-full h-full object-cover transition-all duration-700 group-hover:scale-110"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gray-200 flex items-center justify-center">
+                          <span className="text-gray-400">No image</span>
+                        </div>
+                      )}
                       {/* Overlay gradient */}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                     </div>
@@ -200,7 +298,7 @@ const AboutPage = () => {
             />
           </div>
           
-          <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <div className="relative px-4 text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -209,11 +307,11 @@ const AboutPage = () => {
               className="max-w-6xl mx-auto"
             >
               <h2 className="font-light text-4xl md:text-6xl tracking-tight text-white mb-6">
-                Ready to Make the Switch?
+                {aboutData.ctaTitle}
               </h2>
               <div className="w-16 h-px bg-gradient-to-r from-transparent via-emerald-500/50 to-transparent mx-auto mb-8" />
               <p className="text-white/60 font-light text-xl mb-12 max-w-2xl mx-auto leading-relaxed">
-                Experience the difference. Join thousands who've already chosen a cleaner, smarter way to commute.
+                {aboutData.ctaDescription}
               </p>
               <div className="flex flex-col sm:flex-row gap-6 justify-center">
                 <motion.a 

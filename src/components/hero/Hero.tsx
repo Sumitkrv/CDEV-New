@@ -1,54 +1,23 @@
 import { motion, AnimatePresence, useMotionValue, useTransform } from 'framer-motion'
 import { useRef, useState, useEffect } from 'react'
+import axios from 'axios'
 
 interface HeroSectionProps {
   onBookTestRide: () => void
 }
 
-const heroImages = [
-  '/images/blue scooty.jpg',
-  '/images/CD ev 1.jpg',
-  '/images/CD 2.jpg',
-  '/images/CD 3.jpg',
-  '/images/CD 4.jpg',
-  '/images/ChatGPT Image Nov 27, 2025, 05_26_27 PM.png',
-]
+interface HeroSlide {
+  title: string
+  subtitle: string
+  specs: string[]
+  image: string
+}
 
-const productInfo = [
-  {
-    title: 'Blue Elegance',
-    subtitle: 'Premium Electric Scooter',
-    specs: ['150+ km range', '0-60 in 3.2s', 'Fast charging']
-  },
-  {
-    title: 'Urban Rider',
-    subtitle: 'City Commuting Redefined',
-    specs: ['Smart connectivity', '200+ km range', 'LED lighting']
-  },
-  {
-    title: 'Sport Edition',
-    subtitle: 'Performance Meets Style',
-    specs: ['High-speed mode', 'Carbon accents', 'Sport suspension']
-  },
-  {
-    title: 'Classic Design',
-    subtitle: 'Timeless Electric Mobility',
-    specs: ['Retro styling', '180+ km range', 'Comfort seating']
-  },
-  {
-    title: 'Advanced Model',
-    subtitle: 'Next-Gen Technology',
-    specs: ['AI assistance', '250+ km range', 'Wireless charging']
-  },
-  {
-    title: 'Future Vision',
-    subtitle: 'Tomorrow\'s Ride Today',
-    specs: ['Autonomous features', '300+ km range', 'Solar charging']
-  },
-]
+const STRAPI_URL = 'http://localhost:1337'
 
 const HeroSection = ({ onBookTestRide }: HeroSectionProps) => {
   const containerRef = useRef<HTMLDivElement>(null)
+  const [heroSlides, setHeroSlides] = useState<HeroSlide[]>([])
   const [currentImageIndex, setCurrentImageIndex] = useState(0)
   const [nextImageIndex, setNextImageIndex] = useState(1)
   const [isTransitioning, setIsTransitioning] = useState(false)
@@ -66,8 +35,46 @@ const HeroSection = ({ onBookTestRide }: HeroSectionProps) => {
   
   const splitPosition = useTransform(mouseX, [0, windowWidth], [30, 70])
 
+  // Fetch hero slides from Strapi
+  useEffect(() => {
+    const fetchHeroSlides = async () => {
+      try {
+        const response = await axios.get(`${STRAPI_URL}/api/home?populate[heroSlides][populate]=*`)
+        const data = response.data.data
+        
+        if (data.heroSlides && data.heroSlides.length > 0) {
+          const slides = data.heroSlides.map((slide: any) => ({
+            title: slide.title,
+            subtitle: slide.subtitle,
+            specs: Array.isArray(slide.specs) ? slide.specs : [],
+            image: slide.image?.url?.startsWith('http') 
+              ? slide.image.url 
+              : `${STRAPI_URL}${slide.image?.url || ''}`
+          }))
+          setHeroSlides(slides)
+        }
+      } catch (err) {
+        console.error('Error fetching hero slides:', err)
+        setHeroSlides([])
+      }
+    }
+    
+    fetchHeroSlides()
+  }, [])
+
+  const heroImages = heroSlides.map(slide => slide.image)
+  const productInfo = heroSlides.map(slide => ({
+    title: slide.title,
+    subtitle: slide.subtitle,
+    specs: slide.specs
+  }))
+
   // Preload images on mount
   useEffect(() => {
+    if (heroSlides.length === 0) {
+      setImagesLoaded(true)
+      return
+    }
     const preloadImages = async () => {
       try {
         const imagePromises = heroImages.map((src) => {
@@ -88,7 +95,7 @@ const HeroSection = ({ onBookTestRide }: HeroSectionProps) => {
     }
     
     preloadImages()
-  }, [])
+  }, [heroImages])
 
   // Set window width on mount (client-side only)
   useEffect(() => {
@@ -235,13 +242,18 @@ const HeroSection = ({ onBookTestRide }: HeroSectionProps) => {
     }
   }, [])
 
-  // Show loading state while images are loading
-  if (!imagesLoaded) {
+  // Show loading state while images are loading OR no slides
+  if (!imagesLoaded || heroSlides.length === 0) {
     return (
       <section className="relative h-screen w-full bg-gradient-to-br from-gray-900 to-black overflow-hidden mt-[72px] flex items-center justify-center">
         <div className="text-center text-white">
           <div className="w-16 h-16 border-4 border-white/20 border-t-white rounded-full animate-spin mx-auto mb-4"></div>
-          <p className="text-xl font-light tracking-wider">Loading Experience...</p>
+          <p className="text-xl font-light tracking-wider">
+            {heroSlides.length === 0 ? 'Loading hero content...' : 'Loading Experience...'}
+          </p>
+          {heroSlides.length === 0 && (
+            <p className="text-sm text-white/60 mt-2">Make sure Strapi API permissions are enabled</p>
+          )}
         </div>
       </section>
     )
@@ -361,10 +373,10 @@ const HeroSection = ({ onBookTestRide }: HeroSectionProps) => {
                 transition={{ delay: 0.2, duration: 0.5 }}
               >
                 <h2 className="text-4xl font-black text-white mb-1">
-                  {productInfo[currentImageIndex].title}
+                  {productInfo[currentImageIndex]?.title || 'Loading...'}
                 </h2>
                 <p className="text-white/60 text-sm font-light tracking-wide">
-                  {productInfo[currentImageIndex].subtitle}
+                  {productInfo[currentImageIndex]?.subtitle || ''}
                 </p>
               </motion.div>
 
@@ -375,7 +387,7 @@ const HeroSection = ({ onBookTestRide }: HeroSectionProps) => {
                 transition={{ delay: 0.4, duration: 0.5 }}
                 className="space-y-2"
               >
-                {productInfo[currentImageIndex].specs.map((spec, index) => (
+                {(productInfo[currentImageIndex]?.specs || []).map((spec, index) => (
                   <motion.div
                     key={index}
                     initial={{ x: -20, opacity: 0 }}

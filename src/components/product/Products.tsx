@@ -1,6 +1,7 @@
 import { motion, useMotionValue, useTransform, useSpring, useInView } from 'framer-motion'
 import { Link } from 'react-router-dom'
 import { useState, useRef, useEffect } from 'react'
+import axios from 'axios'
 
 interface Product {
   id: string
@@ -13,6 +14,8 @@ interface Product {
   image: string
   gradient: string
 }
+
+const STRAPI_URL = 'http://localhost:1337'
 
 const CountUp = ({ end, duration = 2, suffix = '' }: { end: number; duration?: number; suffix?: string }) => {
   const [count, setCount] = useState(0)
@@ -49,41 +52,7 @@ const CountUp = ({ end, duration = 2, suffix = '' }: { end: number; duration?: n
   )
 }
 
-const products: Product[] = [
-  {
-    id: 'eco-rider',
-    name: 'Eco Rider',
-    tagline: 'Urban Efficiency',
-    price: '₹79,999',
-    range: '80 km',
-    acceleration: '4.5s',
-    topSpeed: '55 km/h',
-    image: '/images/CD_EV15834.jpg',
-    gradient: 'from-blue-500/20 to-cyan-500/20',
-  },
-  {
-    id: 'city-pro',
-    name: 'City Pro',
-    tagline: 'Premium Performance',
-    price: '₹99,999',
-    range: '120 km',
-    acceleration: '3.8s',
-    topSpeed: '65 km/h',
-    image: '/images/CD_EV15750.jpg',
-    gradient: 'from-purple-500/20 to-pink-500/20',
-  },
-  {
-    id: 'velocity-x',
-    name: 'Velocity X',
-    tagline: 'Ultimate Power',
-    price: '₹1,29,999',
-    range: '150 km',
-    acceleration: '3.2s',
-    topSpeed: '75 km/h',
-    image: '/images/nohat_upscaled_x4_5CwHTQ.jpg',
-    gradient: 'from-orange-500/20 to-red-500/20',
-  },
-]
+const defaultProducts: Product[] = []
 
 interface ProductCardProps {
   product: Product
@@ -199,6 +168,39 @@ const ProductCard = ({ product, index, isActive, onHoverStart, onHoverEnd }: Pro
 
 const ProductShowcase = () => {
   const [activeIndex, setActiveIndex] = useState<number | null>(null)
+  const [products, setProducts] = useState<Product[]>(defaultProducts)
+
+  // Fetch products from Strapi
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get(`${STRAPI_URL}/api/home?populate[products][populate]=*`)
+        const data = response.data.data
+        
+        if (data.products && data.products.length > 0) {
+          const productsData = data.products.map((product: any) => ({
+            id: product.slug || product.name.toLowerCase().replace(/\s+/g, '-'),
+            name: product.name,
+            tagline: product.tagline,
+            price: product.price,
+            range: product.range,
+            acceleration: product.acceleration,
+            topSpeed: product.topSpeed,
+            image: product.image?.url?.startsWith('http') 
+              ? product.image.url 
+              : `${STRAPI_URL}${product.image?.url || ''}`,
+            gradient: product.gradient || 'from-blue-500/20 to-cyan-500/20'
+          }))
+          setProducts(productsData)
+        }
+      } catch (err) {
+        console.error('Error fetching products:', err)
+        // Keep default data on error
+      }
+    }
+    
+    fetchProducts()
+  }, [])
 
   return (
     <section id="products" className="relative py-32 bg-black text-white overflow-hidden">
