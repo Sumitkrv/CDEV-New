@@ -89,7 +89,7 @@ function SplashCursor({
       };
       let gl = canvas.getContext('webgl2', params);
       const isWebGL2 = !!gl;
-      if (!isWebGL2) gl = canvas.getContext('webgl', params) || canvas.getContext('experimental-webgl', params);
+      if (!isWebGL2) gl = canvas.getContext('webgl', params) || (canvas.getContext('experimental-webgl', params) as WebGLRenderingContext | null);
 
       if (!gl) throw new Error('WebGL not supported');
 
