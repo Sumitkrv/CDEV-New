@@ -9,7 +9,7 @@ interface GalleryImage {
   color: string
 }
 
-const STRAPI_URL = 'http://localhost:1337'
+const STRAPI_URL = import.meta.env.VITE_STRAPI_URL || 'http://localhost:1337'
 
 const defaultGalleryImages: GalleryImage[] = [
   { src: '/images/CD_EV15783.jpg', title: 'Aerodynamic Excellence', category: 'Design', color: 'from-blue-500/20 to-cyan-500/20' },

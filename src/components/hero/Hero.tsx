@@ -13,7 +13,7 @@ interface HeroSlide {
   image: string
 }
 
-const STRAPI_URL = 'http://localhost:1337'
+const STRAPI_URL = import.meta.env.VITE_STRAPI_URL || 'http://localhost:1337'
 
 const HeroSection = ({ onBookTestRide }: HeroSectionProps) => {
   const containerRef = useRef<HTMLDivElement>(null)

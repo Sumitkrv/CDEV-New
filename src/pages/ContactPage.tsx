@@ -7,7 +7,7 @@ import Footer from '../components/layout/Footer'
 import BookTestRideModal from '../components/booking/BookingModal'
 import Button from '../components/ui/Button'
 
-const STRAPI_URL = 'http://localhost:1337'
+const STRAPI_URL = import.meta.env.VITE_STRAPI_URL || 'http://localhost:1337'
 
 interface ContactMethod {
   icon: string

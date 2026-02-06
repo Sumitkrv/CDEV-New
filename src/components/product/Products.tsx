@@ -15,7 +15,7 @@ interface Product {
   gradient: string
 }
 
-const STRAPI_URL = 'http://localhost:1337'
+const STRAPI_URL = import.meta.env.VITE_STRAPI_URL || 'http://localhost:1337'
 
 const CountUp = ({ end, duration = 2, suffix = '' }: { end: number; duration?: number; suffix?: string }) => {
   const [count, setCount] = useState(0)

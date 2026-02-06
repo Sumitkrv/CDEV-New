@@ -45,7 +45,7 @@ const DynamicAbout = () => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
 
-  const STRAPI_URL = 'http://localhost:1337'
+  const STRAPI_URL = import.meta.env.VITE_STRAPI_URL || 'http://localhost:1337'
 
   useEffect(() => {
     const fetchAboutData = async () => {

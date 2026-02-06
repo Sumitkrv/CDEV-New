@@ -10,7 +10,7 @@ interface Feature {
   icon?: JSX.Element
 }
 
-const STRAPI_URL = 'http://localhost:1337'
+const STRAPI_URL = import.meta.env.VITE_STRAPI_URL || 'http://localhost:1337'
 
 const USPFeatures = () => {
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null)
