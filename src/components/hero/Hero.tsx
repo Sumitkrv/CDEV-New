@@ -54,8 +54,8 @@ const HeroSection = ({ onBookTestRide }: HeroSectionProps) => {
           setHeroSlides(slides)
         }
       } catch (err) {
-        console.error('Error fetching hero slides:', err)
-        setHeroSlides([])
+        console.error('Error fetching hero slides from Strapi, using defaults:', err)
+        // Keep default slides on error
       }
     }
     
@@ -76,8 +76,8 @@ const HeroSection = ({ onBookTestRide }: HeroSectionProps) => {
       return
     }
     const preloadImages = async () => {
-      try {
-        const imagePromises = heroImages.map((src) => {
+      try {:', err)
+        setHeroSlides([])s.map((src) => {
           return new Promise((resolve, reject) => {
             const img = new Image()
             img.onload = () => resolve(src)
