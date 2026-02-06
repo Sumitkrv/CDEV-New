@@ -54,8 +54,8 @@ const HeroSection = ({ onBookTestRide }: HeroSectionProps) => {
           setHeroSlides(slides)
         }
       } catch (err) {
-        console.error('Error fetching hero slides from Strapi, using defaults:', err)
-        // Keep default slides on error
+        console.error('Error fetching hero slides:', err)
+        setHeroSlides([])
       }
     }
     

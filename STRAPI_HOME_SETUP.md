@@ -1,4 +1,4 @@
-VITE_STRAPI_URL=http://localhost:1337# 🏠 HOME PAGE STRAPI SETUP GUIDE
+# 🏠 HOME PAGE STRAPI SETUP GUIDE
 
 ## ✅ Backend Setup Complete!
 
