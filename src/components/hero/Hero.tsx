@@ -76,8 +76,8 @@ const HeroSection = ({ onBookTestRide }: HeroSectionProps) => {
       return
     }
     const preloadImages = async () => {
-      try {:', err)
-        setHeroSlides([])s.map((src) => {
+      try {
+        const imagePromises = heroImages.map((src) => {
           return new Promise((resolve, reject) => {
             const img = new Image()
             img.onload = () => resolve(src)
